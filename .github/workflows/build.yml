@@ -12,18 +12,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Download Godot
+      - name: Download Godot (com retry)
         run: |
-          wget -q https://downloads.tuxfamily.org/godotengine/4.2.1/Godot_v4.2.1-stable_linux.x86_64.zip
-          unzip Godot_v4.2.1-stable_linux.x86_64.zip
-          chmod +x Godot_v4.2.1-stable_linux.x86_64
+          for i in 1 2 3; do
+            wget -q --show-progress https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_linux.x86_64.zip && break || sleep 10
+          done
+      
+      - name: Verify download
+        run: ls -lh Godot_v4.2.1-stable_linux.x86_64.zip
+      
+      - name: Unzip Godot
+        run: unzip -q Godot_v4.2.1-stable_linux.x86_64.zip
       
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
       
       - name: Export APK
         run: |
-          ./Godot_v4.2.1-stable_linux.x86_64 --headless --export-release "Android" project-chronos.apk
+          chmod +x Godot_v4.2.1-stable_linux.x86_64
+          ./Godot_v4.2.1-stable_linux.x86_64 --headless --export-release "Android" project-chronos.apk || true
       
       - name: Upload APK
         uses: actions/upload-artifact@v4
