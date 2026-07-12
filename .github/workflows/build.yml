@@ -11,29 +11,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Download Godot (com retry)
         run: |
           for i in 1 2 3; do
             wget -q --show-progress https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_linux.x86_64.zip && break || sleep 10
           done
-      
-      - name: Verify download
-        run: ls -lh Godot_v4.2.1-stable_linux.x86_64.zip
-      
+          ls -lh Godot_v4.2.1-stable_linux.x86_64.zip
+
       - name: Unzip Godot
         run: unzip -q Godot_v4.2.1-stable_linux.x86_64.zip
-      
+
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-      
+
       - name: Export APK
         run: |
           chmod +x Godot_v4.2.1-stable_linux.x86_64
-          ./Godot_v4.2.1-stable_linux.x86_64 --headless --export-release "Android" project-chronos.apk || true
-      
+          ./Godot_v4.2.1-stable_linux.x86_64 --headless --export-release "Android" game.apk
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: chronos-android
-          path: project-chronos.apk
+          path: game.apk
