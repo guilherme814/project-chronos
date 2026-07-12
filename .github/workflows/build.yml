@@ -1,36 +1,41 @@
-name: Export Godot Project
+name: Build Project Chronos APK
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  export-android:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download Godot (com retry)
+      - name: Download Godot
         run: |
-          for i in 1 2 3; do
-            wget -q --show-progress https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_linux.x86_64.zip && break || sleep 10
-          done
-          ls -lh Godot_v4.2.1-stable_linux.x86_64.zip
+          wget -q https://github.com/godotengine/godot/releases/download/4.2.1-stable/Godot_v4.2.1-stable_linux.x86_64.zip
+          unzip -q Godot_v4.2.1-stable_linux.x86_64.zip
+          chmod +x Godot_v4.2.1-stable_linux.x86_64
 
-      - name: Unzip Godot
-        run: unzip -q Godot_v4.2.1-stable_linux.x86_64.zip
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Show project structure
+        run: |
+          echo "=== Conteúdo do projeto ==="
+          ls -la
+          echo "=== Cenas ==="
+          ls -la src/scenes/menu/ 2>/dev/null || echo "Pasta não encontrada"
+          echo "=== Preset de exportação ==="
+          cat export_presets.cfg 2>/dev/null || echo "export_presets.cfg não encontrado"
 
       - name: Export APK
         run: |
-          chmod +x Godot_v4.2.1-stable_linux.x86_64
-          ./Godot_v4.2.1-stable_linux.x86_64 --headless --export-release "Android" game.apk
+          echo "=== Iniciando exportação ==="
+          ./Godot_v4.2.1-stable_linux.x86_64 --headless --export-release "Android" game.apk 2>&1 | tee export.log
+          echo "=== Resultado da exportação ==="
+          cat export.log
+          echo "=== Arquivos criados ==="
+          ls -la *.apk 2>/dev/null || echo "NENHUM APK ENCONTRADO"
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: chronos-android
