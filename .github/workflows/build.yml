@@ -1,0 +1,32 @@
+name: Export Godot Project
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  export-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download Godot
+        run: |
+          wget -q https://downloads.tuxfamily.org/godotengine/4.2.1/Godot_v4.2.1-stable_linux.x86_64.zip
+          unzip Godot_v4.2.1-stable_linux.x86_64.zip
+          chmod +x Godot_v4.2.1-stable_linux.x86_64
+      
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      
+      - name: Export APK
+        run: |
+          ./Godot_v4.2.1-stable_linux.x86_64 --headless --export-release "Android" project-chronos.apk
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: chronos-android
+          path: project-chronos.apk

@@ -1,0 +1,17 @@
+# Godot
+.godot/
+*.import
+*.translation
+export_presets.cfg
+
+# Build
+*.apk
+*.aab
+*.zip
+
+# User data
+user/
+
+# OS
+.DS_Store
+Thumbs.db

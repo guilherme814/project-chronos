@@ -1,0 +1,54 @@
+{
+  "countries": [
+    {
+      "tag": "ENG",
+      "name": "Reino da Inglaterra",
+      "color": "#FF0000",
+      "capital": "Londres",
+      "government": "monarchy",
+      "tech_level": 2,
+      "population": 3000000,
+      "gdp": 500.0
+    },
+    {
+      "tag": "FRA",
+      "name": "Reino da França",
+      "color": "#0000FF",
+      "capital": "Paris",
+      "government": "monarchy",
+      "tech_level": 2,
+      "population": 15000000,
+      "gdp": 1200.0
+    },
+    {
+      "tag": "CAS",
+      "name": "Reino de Castela",
+      "color": "#FFFF00",
+      "capital": "Toledo",
+      "government": "monarchy",
+      "tech_level": 2,
+      "population": 5000000,
+      "gdp": 600.0
+    },
+    {
+      "tag": "HRE",
+      "name": "Sacro Império Romano",
+      "color": "#808080",
+      "capital": "Viena",
+      "government": "empire",
+      "tech_level": 2,
+      "population": 10000000,
+      "gdp": 800.0
+    },
+    {
+      "tag": "OTT",
+      "name": "Império Otomano",
+      "color": "#008000",
+      "capital": "Constantinopla",
+      "government": "empire",
+      "tech_level": 2,
+      "population": 12000000,
+      "gdp": 1000.0
+    }
+  ]
+}
